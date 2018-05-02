@@ -7,11 +7,30 @@ import {Post} from '../app.component';
   styleUrls: ['./post-list-item.component.scss']
 })
 export class PostListItemComponent implements OnInit {
-
   @Input() post: Post;
-  constructor() {
+  @Input() loveits: number;
+  isAvailable = true;
+  onDeleteVote() {
+    this.loveits --;
+      this.isAvailable = false;
+      setTimeout(
+          () => {
+              this.isAvailable = true;
+          }, 2000
+      );
   }
-
+  onAddVote() {
+    this.loveits ++;
+      this.isAvailable = false;
+      setTimeout(
+          () => {
+              this.isAvailable = true;
+          }, 2000
+      );
+  }
+  getVote() {
+    return this.loveits;
+  }
   ngOnInit() {
   }
 

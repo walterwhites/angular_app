@@ -9,8 +9,15 @@
       <p>{{post.content}} </p>
       <ul class="list-inline list-unstyled">
         <li><span><i class="glyphicon glyphicon-calendar"></i> Created at: {{post.created_at}} </span></li>
-        <li>|</li>
-        <span><i class="glyphicon glyphicon-comment"></i> Like: {{post.loveIts}} </span>
+        <span><br> <br>
+          <button disabled>
+          Like: {{getVote()}}
+          </button>
+        </span>
+        <div style="padding:20px;">
+          <button class="btn btn-danger" [disabled]="!isAvailable" (click)="onDeleteVote()">Je n'aime pas</button>
+          <button class="btn btn-success" [disabled]="!isAvailable" (click)="onAddVote()">J'aime</button>
+        </div>
       </ul>
     </div>
   </div>
