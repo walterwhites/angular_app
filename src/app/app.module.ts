@@ -7,19 +7,46 @@ import { PostListComponent } from './post-list/post-list.component';
 import { PostListItemComponent } from './post-list-item/post-list-item.component';
 import { FormsModule } from '@angular/forms';
 
+import { AuthComponent } from './auth/auth.component';
+import { PostViewComponent } from './post-view/post-view.component';
+import { SinglePostComponent } from './single-post/single-post.component';
 
+import {RouterModule, Routes} from '@angular/router';
+import {PostsService} from './services/posts.service';
+import {AuthService} from './services/Auth.service';
+import { ErrorComponent } from './error/error.component';
+import {AuthGuard} from './services/auth-guard-service';
+
+
+const appRoutes: Routes = [
+    { path: 'posts', component: PostViewComponent },
+    { path: 'posts/:id', component: SinglePostComponent },
+    { path: 'auth', component: AuthComponent },
+    { path: '', component: PostViewComponent },
+    { path: 'error', component: ErrorComponent },
+    { path: '**', redirectTo: '/error' },
+];
 
 @NgModule({
   declarations: [
     AppComponent,
     PostListComponent,
-    PostListItemComponent ,
+    PostListItemComponent,
+    AuthComponent,
+    PostViewComponent,
+    SinglePostComponent,
+    ErrorComponent,
   ],
   imports: [
     BrowserModule,
-      FormsModule
+      FormsModule,
+      RouterModule.forRoot(appRoutes)
   ],
-  providers: [],
+  providers: [
+      PostsService,
+      AuthService,
+      AuthGuard,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

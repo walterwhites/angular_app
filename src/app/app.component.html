@@ -1,7 +1,13 @@
+<nav class="navbar navbar-default">
+<nav class="container-fluid">
+  <ul class="nav navbar-nav">
+    <li routerLinkActive="active"><a routerLink="auth">Authentification</a></li>
+    <li routerLinkActive="active"><a routerLink="posts">Posts</a></li>
+  </ul>
+    <div class="navbar-right"><p>Vous êtes connecté depuis {{ secondes }} secondes</p></div>
+</nav>
+</nav>
 <div style="text-align:center">
-  <h1>
-    {{ title }}
-  </h1>
+    <router-outlet>
+    </router-outlet>
 </div>
-<app-post-list [vals]="arrayPost.getPosts()">
-</app-post-list>

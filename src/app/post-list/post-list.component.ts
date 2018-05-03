@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {ArrayPost} from '../app.component';
+import {ArrayPost} from '../services/posts.service';
 
 @Component({
   selector: 'app-post-list',

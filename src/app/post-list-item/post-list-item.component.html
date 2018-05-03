@@ -18,6 +18,7 @@
           <button class="btn btn-danger" [disabled]="!isAvailable" (click)="onDeleteVote()">Je n'aime pas</button>
           <button class="btn btn-success" [disabled]="!isAvailable" (click)="onAddVote()">J'aime</button>
         </div>
+        <a class="btn btn-warning" [routerLink]="post.id">Détails</a>
       </ul>
     </div>
   </div>
