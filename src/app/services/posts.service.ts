@@ -16,6 +16,13 @@ export class PostsService {
     emitPostSubject() {
         this.postSubject.next(this.arrayPost);
     }
+
+    newPost(title: string, content: string, loveIts: number, created_at: Date, picture: String) {
+        const id = this.arrayPost[(this.arrayPost.getPosts().length)] + 1;
+        const post = new Post(id, title, content, 100000, new Date('1960-01-17T03:24:00'),
+            'https://pbs.twimg.com/profile_images/699984147956289536/CjPw79mo_400x400.jpg');
+        this.arrayPost.addPost(post);
+    }
 }
 
 export class Init {
@@ -36,8 +43,6 @@ export class Init {
         this.arrayPost.addPost(this.post_beatles);
         this.arrayPost.addPost(this.post_stromae);
         this.arrayPost.addPost(this.post_ironMaiden);
-        console.log('test');
-        console.log(this.arrayPost.getPosts());
     }
 }
 

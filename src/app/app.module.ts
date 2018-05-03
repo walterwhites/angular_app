@@ -16,11 +16,13 @@ import {PostsService} from './services/posts.service';
 import {AuthService} from './services/Auth.service';
 import { ErrorComponent } from './error/error.component';
 import {AuthGuard} from './services/auth-guard-service';
+import { EditPostComponent } from './edit-post/edit-post.component';
 
 
 const appRoutes: Routes = [
     { path: 'posts', component: PostViewComponent },
     { path: 'posts/:id', component: SinglePostComponent },
+    { path: 'edit', component: EditPostComponent },
     { path: 'auth', component: AuthComponent },
     { path: '', component: PostViewComponent },
     { path: 'error', component: ErrorComponent },
@@ -36,6 +38,7 @@ const appRoutes: Routes = [
     PostViewComponent,
     SinglePostComponent,
     ErrorComponent,
+    EditPostComponent,
   ],
   imports: [
     BrowserModule,
