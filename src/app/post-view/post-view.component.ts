@@ -22,5 +22,4 @@ export class PostViewComponent implements OnInit {
         );
         this.postsService.emitPostSubject();
     }
-
 }

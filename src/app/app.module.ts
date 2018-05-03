@@ -5,7 +5,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { PostListComponent } from './post-list/post-list.component';
 import { PostListItemComponent } from './post-list-item/post-list-item.component';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import { AuthComponent } from './auth/auth.component';
 import { PostViewComponent } from './post-view/post-view.component';
@@ -17,6 +17,10 @@ import {AuthService} from './services/Auth.service';
 import { ErrorComponent } from './error/error.component';
 import {AuthGuard} from './services/auth-guard-service';
 import { EditPostComponent } from './edit-post/edit-post.component';
+import { UserListComponent } from './user-list/user-list.component';
+import {UserService} from './services/user.service';
+import { NewUserComponent } from './new-user/new-user.component';
+import {HttpClientModule} from '@angular/common/http';
 
 
 const appRoutes: Routes = [
@@ -24,6 +28,8 @@ const appRoutes: Routes = [
     { path: 'posts/:id', component: SinglePostComponent },
     { path: 'edit', component: EditPostComponent },
     { path: 'auth', component: AuthComponent },
+    { path: 'users', component: UserListComponent },
+    { path: 'new-user', component: NewUserComponent },
     { path: '', component: PostViewComponent },
     { path: 'error', component: ErrorComponent },
     { path: '**', redirectTo: '/error' },
@@ -39,16 +45,21 @@ const appRoutes: Routes = [
     SinglePostComponent,
     ErrorComponent,
     EditPostComponent,
+    UserListComponent,
+    NewUserComponent,
   ],
   imports: [
     BrowserModule,
       FormsModule,
-      RouterModule.forRoot(appRoutes)
+      RouterModule.forRoot(appRoutes),
+      ReactiveFormsModule,
+      HttpClientModule
   ],
   providers: [
       PostsService,
       AuthService,
       AuthGuard,
+      UserService,
   ],
   bootstrap: [AppComponent]
 })

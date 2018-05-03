@@ -1,10 +1,16 @@
 import {Subject} from 'rxjs/Subject';
 import {Subscription} from 'rxjs/Subscription';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 
+@Injectable()
 export class PostsService {
     postSubject = new Subject<ArrayPost>();
     init: Init = new Init();
     private arrayPost: ArrayPost = this.init.arrayPost;
+
+    constructor(private httpClient: HttpClient) {
+    }
     getPostById(id: number) {
         const post = this.arrayPost.getPosts().find(
             (postObject) => {
@@ -22,6 +28,33 @@ export class PostsService {
         const post = new Post(id, title, content, 100000, new Date('1960-01-17T03:24:00'),
             'https://pbs.twimg.com/profile_images/699984147956289536/CjPw79mo_400x400.jpg');
         this.arrayPost.addPost(post);
+    }
+
+    savePostToServer() {
+        this.httpClient.put('https://http-client-demo-5055d.firebaseio.com/posts.json', this.arrayPost)
+            .subscribe(
+                () => {
+                    console.log('enrigstrement terminé');
+                },
+                (error) => {
+                    console.log('erreur de sauvegarde ! ' + error);
+                }
+            );
+    }
+
+    getPostFromServer() {
+        this.httpClient
+            .get<ArrayPost>('https://http-client-demo-5055d.firebaseio.com/posts.json')
+            .subscribe(
+                (response) => {
+                    this.arrayPost = response;
+                    this.emitPostSubject();
+                    console.log('données récupérées ! ');
+                },
+                (error) => {
+                    console.log('erreur de chargement ! ' + error);
+                }
+            );
     }
 }
 
