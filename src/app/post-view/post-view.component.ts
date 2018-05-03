@@ -13,13 +13,13 @@ export class PostViewComponent implements OnInit {
     arrayPost: ArrayPost;
     postSubscription: Subscription;
     constructor(private postsService: PostsService) {
-    }
-    ngOnInit() {
         this.postSubscription = this.postsService.postSubject.subscribe(
             (post: ArrayPost) => {
                 this.arrayPost = post;
             }
         );
         this.postsService.emitPostSubject();
+    }
+    ngOnInit() {
     }
 }

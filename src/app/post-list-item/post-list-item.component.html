@@ -14,11 +14,12 @@
           Like: {{getVote()}}
           </button>
         </span>
+        <button class="btn btn-danger" [disabled]="!isAvailable" (click)="onDeleteVote()">Je n'aime pas</button>
+        <button class="btn btn-success" [disabled]="!isAvailable" (click)="onAddVote()">J'aime</button>
         <div style="padding:20px;">
-          <button class="btn btn-danger" [disabled]="!isAvailable" (click)="onDeleteVote()">Je n'aime pas</button>
-          <button class="btn btn-success" [disabled]="!isAvailable" (click)="onAddVote()">J'aime</button>
+          <a class="btn btn-info" [routerLink]="post.id">Détails</a>
+          <a class="btn btn-warning" (click)="onDelete(post.id)">Supprimer ce post</a>
         </div>
-        <a class="btn btn-warning" [routerLink]="post.id">Détails</a>
       </ul>
     </div>
   </div>

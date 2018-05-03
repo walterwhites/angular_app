@@ -6,13 +6,13 @@ import {HttpClient} from '@angular/common/http';
 @Injectable()
 export class PostsService {
     postSubject = new Subject<ArrayPost>();
-    init: Init = new Init();
-    private arrayPost: ArrayPost = this.init.arrayPost;
+    private arrayPost: ArrayPost;
 
     constructor(private httpClient: HttpClient) {
+        this.getPostFromServer();
     }
     getPostById(id: number) {
-        const post = this.arrayPost.getPosts().find(
+        const post = this.arrayPost.posts.find(
             (postObject) => {
                 return postObject.id === id;
             }
@@ -23,11 +23,26 @@ export class PostsService {
         this.postSubject.next(this.arrayPost);
     }
 
-    newPost(title: string, content: string, loveIts: number, created_at: Date, picture: String) {
-        const id = this.arrayPost[(this.arrayPost.getPosts().length)] + 1;
-        const post = new Post(id, title, content, 100000, new Date('1960-01-17T03:24:00'),
-            'https://pbs.twimg.com/profile_images/699984147956289536/CjPw79mo_400x400.jpg');
-        this.arrayPost.addPost(post);
+    newPost(title: string, content: string) {
+        const id = this.arrayPost.posts[(this.arrayPost.posts.length - 1)].id + 1;
+        const post = new Post(id, title, content, 10, new Date().toDateString(),
+            'http://www.adbazar.pk/frontend/images/default-image.jpg');
+        this.arrayPost.posts.push(post);
+        this.savePostToServer();
+    }
+
+    deletePostFromServer(id: number) {
+        this.httpClient.delete('https://http-client-demo-5055d.firebaseio.com/posts/posts/' + id + '.json')
+            .subscribe(
+                () => {
+                    this.arrayPost.posts.splice(id, 1);
+                    console.log('suppression terminé');
+                    this.emitPostSubject();
+                },
+                (error) => {
+                    console.log('erreur de suppression ! ' + error);
+                }
+            );
     }
 
     savePostToServer() {
@@ -35,6 +50,7 @@ export class PostsService {
             .subscribe(
                 () => {
                     console.log('enrigstrement terminé');
+                    this.emitPostSubject();
                 },
                 (error) => {
                     console.log('erreur de sauvegarde ! ' + error);
@@ -46,10 +62,11 @@ export class PostsService {
         this.httpClient
             .get<ArrayPost>('https://http-client-demo-5055d.firebaseio.com/posts.json')
             .subscribe(
-                (response) => {
-                    this.arrayPost = response;
+                (response: ArrayPost) => {
+                    this.arrayPost = response as ArrayPost;
                     this.emitPostSubject();
                     console.log('données récupérées ! ');
+                    console.log(this.arrayPost);
                 },
                 (error) => {
                     console.log('erreur de chargement ! ' + error);
@@ -58,35 +75,14 @@ export class PostsService {
     }
 }
 
-export class Init {
-    arrayPost: ArrayPost;
-    post_beatles: Post;
-    post_stromae: Post;
-    post_ironMaiden: Post;
-    constructor() {
-        this.arrayPost = new ArrayPost();
-        this.post_beatles = new Post(1, 'Beatles', 'Beatles are the best abnd in the world, why ? Listen them and you' +
-            'will understand', 100000, new Date('1960-01-17T03:24:00'),
-            'https://pbs.twimg.com/profile_images/699984147956289536/CjPw79mo_400x400.jpg');
-        this.post_stromae = new Post(2, 'Stromae', 'Tout simplement Formidable :) ', 500, new Date('1960-01-17T03:24:00'),
-            'https://pbs.twimg.com/profile_images/643635163340017664/LK6DJ8eb_400x400.jpg');
-        this.post_ironMaiden = new Post(3, 'Iron Maiden', 'Listen The trooper, Fear of the Dark ... ', 1600,
-            new Date('1960-01-17T03:24:00'),
-            'https://c1.accu.fm/static/images/covers256//covers/g-m/ironmaiden_pieceofmindironma.jpg');
-        this.arrayPost.addPost(this.post_beatles);
-        this.arrayPost.addPost(this.post_stromae);
-        this.arrayPost.addPost(this.post_ironMaiden);
-    }
-}
-
 export class Post {
     title: string;
     content: string;
     loveIts: number;
-    created_at: Date;
+    created_at: string;
     picture: String;
     id: number;
-    constructor(id: number, title: string, content: string, loveIts: number, created_at: Date, picture: String) {
+    constructor(id: number, title: string, content: string, loveIts: number, created_at: string, picture: String) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -98,10 +94,4 @@ export class Post {
 
 export class ArrayPost {
     posts: Post[] = [];
-    getPosts() {
-        return this.posts;
-    }
-    addPost(element: Post) {
-        this.posts.push(element);
-    }
 }

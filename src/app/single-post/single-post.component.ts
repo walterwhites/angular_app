@@ -12,7 +12,7 @@ export class SinglePostComponent implements OnInit {
     title: string;
     content: string;
     loveIts: number;
-    created_at: Date;
+    created_at: string;
     picture: String;
     id: number;
 

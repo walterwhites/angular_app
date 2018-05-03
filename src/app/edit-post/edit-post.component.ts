@@ -18,7 +18,7 @@ export class EditPostComponent implements OnInit {
   onSubmit(form: NgForm) {
     const title = form.value['title'];
       const content = form.value['content'];
-      this.postsService.newPost(title, content, null, null, null);
+      this.postsService.newPost(title, content);
       this.router.navigate(['/posts']);
   }
 
